@@ -21,7 +21,14 @@ export default class PageObject {
      * Navigates to the input URL
      * @param url 
      */
-    async navigateToURL(url) {
+    async navigateToURL(url: string) {
         await this.page.goto(url);
+    }
+
+    //
+    async waitForLocatorToBeVisible(locator: Locator) {
+        await this.page.waitForFunction(async () => {
+            return await locator.isVisible();
+        }, locator, { timeout: 10000 });
     }
 }

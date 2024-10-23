@@ -1,11 +1,10 @@
 import { test, expect } from '@playwright/test';
-import QAPlaygroundMain from '../../page-objects/qa-playground/qa-playground-main';
-import { QAPlaygroundMainURL } from '../../page-objects/qa-playground/qa-playground.constants';
 
+/*
 const qaplaygroundURL = QAPlaygroundMainURL;
 
 test('debug test', async ({ page }) => {
-    /*
+    
     // Navigate to qaplayground's main page
     await page.goto(qaplaygroundURL);
 
@@ -17,5 +16,6 @@ test('debug test', async ({ page }) => {
     let main = new QAPlaygroundMain(page);
     await main.printAllTitles();
     await main.printAllURLs();
-    */
+    
 });
+*/
