@@ -3,31 +3,37 @@ import QAPlaygroundMain from '../../page-objects/qa-playground-main/qa-playgroun
 import QAPDynamicTable from '../../page-objects/qap-dynamic-table/qap-dynamic-table';
 import { QAPlaygroundOptions } from '../../utility/data/qa-playground.data';
 
+// Test data
 const dynamicTableOption = QAPlaygroundOptions.dynamicTable;
+const superheroData = [
+    { heroName: 'Ant-Man', realName: 'Eric O\'Grady', email: 'ant-man@avengers.com' },
+    { heroName: 'Black Widow', realName: 'Natasha Alianovna Romanova', email: 'black-widow@avengers.com' },
+    { heroName: 'Captain America', realName: 'Steve Rogers', email: 'captain-america@avengers.com' },
+    { heroName: 'Deadpool', realName: 'Wade Wilson', email: 'deadpool@avengers.com' },
+    { heroName: 'Doctor Strange', realName: 'Stephen Vincent Strange', email: 'dctor-strange@avengers.com' },
+    { heroName: 'Hulk', realName: 'Robert Bruce Banner', email: 'hulk@avengers.com' },
+    { heroName: 'Iron-Man', realName: 'Anthony \'Tony\' Stark', email: 'iron-man@avengers.com' },
+    { heroName: 'Spider-Man', realName: 'Peter Parker', email: 'spider-man@avengers.com' },
+];
 
-test.describe('QA Playground Mini-App: Dynamic Table', async () => {
+test('QA Playground Mini-App: Dynamic Table', async ({ page }) => {
 
-    test('Navigation to Dynamic Table', async ({ page }) => {
-        // Navigate to QA Playground's main page
-        let qapMain = new QAPlaygroundMain(page);
-        await qapMain.navigate();
-    
-        // Select the Dynamic Table option
-        await qapMain.selectOptionByKey(dynamicTableOption.key);
-    
-        // Verify arrival at Dynamic Table page
-        expect((await qapMain.getCurrentURL()).includes(dynamicTableOption.extension))
-            .toBe(true);
-    });
-    
-    test('Number of rows', async ({ page }) => {
-        let qapDynamicTable = new QAPDynamicTable(page);
-        console.warn(await qapDynamicTable.isDisplayed());
-        await qapDynamicTable.waitForLocatorToBeVisible(qapDynamicTable.rowLocator);
-        console.warn(await qapDynamicTable.isDisplayed());
+    // Navigate to QA Playground's main page
+    let qapMain = new QAPlaygroundMain(page);
+    await qapMain.navigate();
 
-        expect(await qapDynamicTable.getNumberOfRows())
-            .toBe(8);
-    });
+    // Select the Dynamic Table option
+    await qapMain.selectOptionByKey(dynamicTableOption.key);
+
+    // Wait for page load
+    let qapDynamicTable = new QAPDynamicTable(page);
+    await qapDynamicTable.waitForLoad();
+
+    // Check for number of rows
+    expect(await qapDynamicTable.getNumberOfRows())
+        .toBe(8);
+
+    // Check that all data is accounted for
+    //expect()
 
 });

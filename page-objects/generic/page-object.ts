@@ -1,5 +1,6 @@
 import { ElementHandle, Locator } from "@playwright/test";
 import { type Page } from "@playwright/test";
+import LocatorHelper from "../../utility/helpers/locator.helper";
 
 export default class PageObject {
 
@@ -25,10 +26,12 @@ export default class PageObject {
         await this.page.goto(url);
     }
 
-    //
-    async waitForLocatorToBeVisible(locator: Locator) {
-        await this.page.waitForFunction(async () => {
-            return await locator.isVisible();
-        }, locator, { timeout: 10000 });
+    /**
+     * Waits for any element with matching locator to be visble
+     * - uses Page.waitForSelector(Locator._selector)
+     * @param locator 
+     */
+    async waitForLocatorToBeVisible(locator: Locator, timeout: number = 5000) {
+        await this.page.waitForSelector(LocatorHelper.getSelectorFromLocator(locator), { timeout: timeout })
     }
 }

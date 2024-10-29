@@ -7,8 +7,11 @@ export default class QAPDynamicTable extends PageObject {
     page: Page;
     option: QAPlaygroundOptionModel;
     url: string;
-    rowLocator: Locator;
 
+    superheroHeaderLocator: Locator;
+    bodyLocator: Locator;
+    rowLocator: Locator;
+    
     /**
      * QA Playground Dynamic Table
      * - Dynamic Table page for QA Playground
@@ -21,15 +24,24 @@ export default class QAPDynamicTable extends PageObject {
         this.option = QAPlaygroundOptions.dynamicTable;
         this.url = `${QAPlaygroundMainURL}${this.option.extension}`;
 
-        this.rowLocator = this.page.locator('tbody');
+        this.superheroHeaderLocator = this.page.getByText('Superhero');
+
+        this.bodyLocator = this.page.locator('[id="tbody"]');
+        this.rowLocator = this.bodyLocator.locator('tr');
     }
 
-    //
-    async isDisplayed() {
-        return await this.rowLocator.isVisible();
+    /**
+     * Waits for specified locators to be visible
+     */
+    async waitForLoad() {
+        await this.waitForLocatorToBeVisible(this.superheroHeaderLocator);
+        await this.waitForLocatorToBeVisible(this.rowLocator);
     }
 
-    //
+    /**
+     * Gets number of superhero rows
+     * @returns 
+     */
     async getNumberOfRows() {
         return (await this.rowLocator.all()).length;
     }
