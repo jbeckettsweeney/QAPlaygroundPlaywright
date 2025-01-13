@@ -1,12 +1,12 @@
 import { Page } from "@playwright/test";
 import PageObject from "../generic/page-object";
-import { QAPlaygroundMainURL, keyOptions, QAPlaygroundOptions } from "./qa-playground.constants";
+import * as QAP from "../../utility/data/qa-playground.data";
 
 export default class QAPlaygroundMain extends PageObject {
 
     page: Page;
     url: string;
-    cardListData: { key: keyOptions, title: string, extension: string }[];
+    cardListData: QAP.QAPlaygroundData;
     genericCardLocator: string;
     cardTitleLocator: string;
 
@@ -19,10 +19,11 @@ export default class QAPlaygroundMain extends PageObject {
     constructor(page: Page) {
         super(page);
         this.page = page;
+        this.url = QAP.QAPlaygroundMainURL;
 
-        this.url = QAPlaygroundMainURL;
-        this.cardListData = QAPlaygroundOptions;
+        this.cardListData = QAP.QAPlaygroundOptions;
 
+        // Debug
         this.genericCardLocator = '[class="card card-course"]';
         this.cardTitleLocator = 'h3';
     }
@@ -38,6 +39,19 @@ export default class QAPlaygroundMain extends PageObject {
     }
 
     /**
+     * Selects the option by matching input key
+     * @param key 
+     */
+    async selectOptionByKey(key: QAP.keyOptions) {
+        // Get URL extension for input option
+        let extension = QAP.QAPlaygroundOptions[key].extension;
+
+        // Create appropriate locator and click it
+        let optionLocator = this.page.locator(`[href="/${extension}"]`);
+        await optionLocator.click();
+    }
+
+    /**
      * Navigates through each card
      * @returns 
      */
@@ -46,18 +60,20 @@ export default class QAPlaygroundMain extends PageObject {
         let errorString = '';
 
         // Iterate through all options
-        for (const option of QAPlaygroundOptions) {
+        for (const key in QAP.QAPlaygroundOptions) {
             // Navigate to main page
             await this.navigate();
 
-            // Generation option locator, then select found locator
-            let optionLocator = this.page.locator(`[href="${option.extension}"]`);
-            await optionLocator.click();
+            // Get model for current option
+            let model: QAP.QAPlaygroundOptionModel = QAP.QAPlaygroundOptions[key];
+
+            // Select current option
+            await this.selectOptionByKey(model.key)
 
             // Check URL and append error if validation fails
             let currentURL = await this.getCurrentURL();
-            if (!currentURL.includes(option.extension)) {
-                errorString += `error with link for ${option.key}:\n expected: ${option.extension}\n actual: ${currentURL}\n\n`;
+            if (!currentURL.includes(model.extension)) {
+                errorString += `error with link for ${model.key}:\n expected: ${model.extension}\n actual: ${currentURL}\n\n`;
             }
         }
 
