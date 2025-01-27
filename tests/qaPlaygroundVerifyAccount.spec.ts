@@ -1,18 +1,18 @@
 import { test, expect } from '@playwright/test';
-import QAPlaygroundMain from '../../page-objects/qa-playground-main/qa-playground-main';
-import { QAPlaygroundOptions } from '../../utility/data/qa-playground.data';
-import QAPVerifyAccount from '../../page-objects/qap-verify-account/qap-verify-account';
+import QAPlaygroundMain from '../page-objects/qa-playground-main/qa-playground-main';
+import { QAPlaygroundOptions } from '../utility/data/qa-playground.data';
+import QAPVerifyAccount from '../page-objects/qap-verify-account/qap-verify-account';
 
 // Test data
-const dynamicTableOption = QAPlaygroundOptions.verifyYourAccount;
+const verifyYourAccountOption = QAPlaygroundOptions.verifyYourAccount;
 
 test('QA Playground Mini-App: Verify Your Account', async ({ page }) => {
     // Navigate to QA Playground's main page
     let qapMain = new QAPlaygroundMain(page);
     await qapMain.navigate();
 
-    // Select the Dynamic Table option
-    await qapMain.selectOptionByKey(dynamicTableOption.key);
+    // Select the Verify Your Account option
+    await qapMain.selectOptionByKey(verifyYourAccountOption.key);
 
     // Wait for page load
     let qapVerifyAccount = new QAPVerifyAccount(page);

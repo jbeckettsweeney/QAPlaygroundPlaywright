@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
-import QAPlaygroundMain from '../../page-objects/qa-playground-main/qa-playground-main';
-import QAPDynamicTable from '../../page-objects/qap-dynamic-table/qap-dynamic-table';
-import { QAPlaygroundOptions } from '../../utility/data/qa-playground.data';
-import CompareHelper from '../../utility/helpers/compare.helper';
+import QAPlaygroundMain from '../page-objects/qa-playground-main/qa-playground-main';
+import QAPDynamicTable from '../page-objects/qap-dynamic-table/qap-dynamic-table';
+import { QAPlaygroundOptions } from '../utility/data/qa-playground.data';
+import CompareHelper from '../utility/helpers/compare.helper';
 
 // Test data
 const dynamicTableOption = QAPlaygroundOptions.dynamicTable;
